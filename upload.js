@@ -70,6 +70,6 @@ oauth2Client.refreshAccessToken((err, tokens) => {
       .then(console.log)
       .catch(console.error);
   } else {
-    console.log(`Invalid command "${command}".`);
+    // console.log(`Invalid command "${command}".`);
   }
 });

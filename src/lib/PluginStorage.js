@@ -12,16 +12,16 @@ export default class PluginStorage {
   }
 
   async get(key, defaultValue = undefined) {
-    console.log('sync getting', key);
+    // console.log('sync getting', key);
 
     const data = await this.browserStorage.sync.get(key);
-    console.log('sync got', data);
+    // console.log('sync got', data);
 
     return data[key] !== undefined ? data[key] : defaultValue;
   }
 
   set(key, value) {
-    console.log('sync ZETting', value);
+    // console.log('sync ZETting', value);
     const data = {};
     data[key] = value;
 

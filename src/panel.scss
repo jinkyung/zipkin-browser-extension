@@ -1,0 +1,37 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    // color: #222;
+}
+
+#zipkin-body {
+    margin: 0;
+    background: #f4f6f9;
+    min-width: 700px;
+}
+
+#content .container {
+    width: 97%;
+    margin: 0 auto;
+    .row {
+        .col-md-12 {
+            h2 {
+                margin: 0;
+                padding: 15px 0;
+            }
+            &>div:nth-child(2) {
+                width: 100%;
+                margin-bottom: 10px;
+                &>div:first-child {
+                    #zipkin-url {
+                        padding: 3px 5px;
+                        font-size: 12px;
+                    }
+                    margin-bottom: 8px;
+                }
+            }
+        }
+    }
+}

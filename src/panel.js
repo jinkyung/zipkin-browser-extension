@@ -6,6 +6,7 @@ import PluginStorage from './lib/PluginStorage';
 import { RemoteStorageServer } from './lib/RemoteStorage';
 import addNetworkEvents from './lib/addNetworkEvents';
 import { RemoteSetIntervalServer } from './lib/RemoteSetInterval';
+import './panel.scss';
 
 const pubsub = new PanelToExtensionPubsub();
 addNetworkEvents(browser.devtools.network, pubsub);

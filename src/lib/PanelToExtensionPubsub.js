@@ -4,15 +4,15 @@ export default class PanelToExtensionPubsub extends Pubsub {
   constructor() {
     super();
     const connectToBackgroundPage = () => {
-      console.log('Connecting to extension');
+      // console.log('Connecting to extension');
       this.backgroundPageConnection = browser.runtime.connect({
         name: 'devtools-page',
       });
-      console.log('connected to extension');
+      // console.log('connected to extension');
 
       const messageListener = request => {
-        console.log(`panel received message ${request.type}`, request.message);
-        console.log('substribers are', this.handlers);
+        // console.log(`panel received message ${request.type}`, request.message);
+        // console.log('substribers are', this.handlers);
         this.notifySubscribers(request.type, request.message);
       };
 
@@ -25,11 +25,11 @@ export default class PanelToExtensionPubsub extends Pubsub {
     connectToBackgroundPage();
   }
   pub(topic, message = {}) {
-    console.log(`publishing from panel to extension ${topic}`, message);
+    // console.log(`publishing from panel to extension ${topic}`, message);
     this.notifySubscribers(topic, message);
-    console.log(
-      'all local subscribers were notified, now posting to background page connection',
-    );
+    // console.log(
+    //   'all local subscribers were notified, now posting to background page connection',
+    // );
     this.backgroundPageConnection.postMessage({
       type: topic,
       message,

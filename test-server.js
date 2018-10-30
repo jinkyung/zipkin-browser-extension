@@ -14,16 +14,16 @@ app.get('/config.json', (req, res) => {
   });
 });
 app.get('*', (req, res) => {
-  console.log('req', req.headers);
+  // console.log('req', req.headers);
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
     'Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With',
   );
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST');
-  console.log('res', res.headers);
+  // console.log('res', res.headers);
   res.json(req.headers);
 });
 app.listen(port, () => {
-  console.log(`zipkin-chrome-extension test server running on port ${port}`);
+  // console.log(`zipkin-chrome-extension test server running on port ${port}`);
 });

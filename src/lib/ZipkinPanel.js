@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import ZipkinUI from './zipkinUI';
 import matchUrl from './matchUrl';
+import ZipkinFilteringOption from './ZipkinFilteringOption';
 
 export default class ZipkinPanel extends Component {
-  static propTypes = {
-    pubsub: PropTypes.shape({
-      sub: PropTypes.func().isRequired,
-    }).isRequired,
-    themeName: PropTypes.string(),
-  };
+  // static propTypes = {
+  //   pubsub: PropTypes.shape({
+  //     sub: PropTypes.func().isRequired,
+  //   }).isRequired,
+  //   themeName: PropTypes.string(),
+  // };
 
   static defaultProps = {
     themeName: 'default',
@@ -20,7 +21,12 @@ export default class ZipkinPanel extends Component {
     this.state = {
       requests: [],
       zipkinUrls: [],
+      staticOption: 'off',
+      domainOption: '11st.co.kr',
+      searchKeyword: ''
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -66,19 +72,60 @@ export default class ZipkinPanel extends Component {
     });
   }
 
+  handleChange(e) {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
+
   render() {
     const darkTheme = this.props.themeName === 'dark';
     const textColor = darkTheme ? '#a5a5a5' : '#000';
     const linkColor = darkTheme ? '#66ccff' : undefined;
-
     const alignLeft = { textAlign: 'left', verticalAlign: 'top' };
+
+    const { staticOption, domainOption, searchKeyword, requests } = this.state;
+    let requestsToShow = requests;
+    if (staticOption === 'off') {
+      requestsToShow = requestsToShow.filter(request =>
+        !request.url.includes('.js')
+        && !request.url.includes('.html')
+        && !request.url.includes('.css')
+        && !request.url.includes('.png')
+        && !request.url.includes('.jpg')
+        && !request.url.includes('.jpeg')
+        && !request.url.includes('.gif')
+        && !request.url.includes('.bmp')
+        && !request.url.includes('.tif')
+      );
+    }
+    if (domainOption) {
+      requestsToShow = requestsToShow.filter(request => request.url.split('//')[1].split('/')[0].includes(domainOption));
+    }
+    if (searchKeyword) {
+      requestsToShow = requestsToShow.filter(request => request.url.includes(searchKeyword));
+    }
+
     return (
       <div className="container" style={{ color: textColor }}>
         <div className="row">
           <div className="col-md-12">
             <h2>Zipkin traces</h2>
             <ZipkinUI pubsub={this.props.pubsub} darkTheme={darkTheme} />
-            <table>
+            <ZipkinFilteringOption
+              staticOption={staticOption}
+              domainOption={domainOption}
+              searchKeyword={searchKeyword}
+              handleChange={this.handleChange}
+            />
+            {requests.length > 0 ?
+              <div style={{ marginTop: '20px', marginBottom: '8px' }}>
+                <span style={{ color: '#888', marginRight: '4px' }}>Total Traces:</span>
+                <span style={{ fontWeight: 'bold', marginRight: '15px' }}>{requests.length}</span>
+                <span style={{ color: '#888', marginRight: '4px' }}>Filtered Traces:</span>
+                <span style={{ fontWeight: 'bold' }}>{requestsToShow.length}</span>
+              </div> : null}
+            <table style={{ marginBottom: '50px' }}>
               <thead>
                 <tr>
                   <th style={alignLeft}>Trace</th>
@@ -86,8 +133,8 @@ export default class ZipkinPanel extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.requests.length > 0 ? (
-                  this.state.requests.map(request => (
+                {requests.length > 0 ? (
+                  requestsToShow.map(request => (
                     <tr key={request.traceId}>
                       <td style={alignLeft}>
                         <a
@@ -102,13 +149,13 @@ export default class ZipkinPanel extends Component {
                     </tr>
                   ))
                 ) : (
-                  <tr>
-                    <td colSpan="2">
-                      Recording network activity... Perform a request or hit F5
-                      to record the reload.
+                    <tr>
+                      <td colSpan="2" style={{ color: '#888' }}>
+                        Recording network activity... Perform a request or hit F5
+                        to record the reload.
                     </td>
-                  </tr>
-                )}
+                    </tr>
+                  )}
               </tbody>
             </table>
           </div>
