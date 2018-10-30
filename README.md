@@ -27,7 +27,7 @@ Check out the [Usage documentation](https://github.com/openzipkin/zipkin-chrome-
 - git clone [repo url] into [working directory]
 - npm install
 - npm install -g jpm
-- npm run dev-firefox
+- npm run dev
 - cd build/firefox
 - jpm run
 
