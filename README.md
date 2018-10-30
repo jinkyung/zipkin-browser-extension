@@ -18,7 +18,7 @@ Check out the [Usage documentation](https://github.com/openzipkin/zipkin-chrome-
 
 - git clone [repo url] into [working directory]
 - npm install
-- npm run dev-chrome
+- npm run dev-ing
 - Follow [Google's guide](https://developer.chrome.com/extensions/getstarted#unpacked) on how to set up
   a local development environment for the extension.
 
